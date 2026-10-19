@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ properties["作業名"] }} 手順書</title>
+  {% if inline_css %}
+  <style>{{ css | safe }}</style>
+  {% else %}
+  <link rel="stylesheet" href="{{ css_url }}">
+  {% endif %}
+</head>
+<body>
+  <header id="cover">
+    <p class="document-type">作業手順書</p>
+    <h1>{{ properties["作業名"] }}</h1>
+    <table class="properties">
+      <caption>プロパティ</caption>
+      <tbody>
+        {% for field in property_fields %}
+        <tr><th scope="row">{{ field }}</th><td>{{ properties.get(field) or "" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <section aria-labelledby="history">
+      <h2 id="history">改訂履歴</h2>
+      <table>
+        <thead><tr>{% for field in history_fields %}<th scope="col">{{ field }}</th>{% endfor %}</tr></thead>
+        <tbody>
+          {% for entry in history %}
+          <tr>{% for field in history_fields %}<td>{{ entry.get(field) or "" }}</td>{% endfor %}</tr>
+          {% else %}
+          <tr><td colspan="4">改訂履歴はありません。</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </header>
+  <nav aria-labelledby="contents">
+    <h2 id="contents">目次</h2>
+    <ul>
+      <li><a href="#cover">プロパティ</a></li>
+      <li><a href="#history">改訂履歴</a></li>
+      {% for section in sections %}
+      <li>
+        <a href="#{{ section.id }}">{{ section.title }}</a>
+        {{ section.toc | safe }}
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <main>
+    {% for section in sections %}
+    <section aria-labelledby="{{ section.id }}">
+      <h2 id="{{ section.id }}">{{ section.title }}</h2>
+      {{ section.body | safe }}
+    </section>
+    {% endfor %}
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });
+  </script>
+</body>
+</html>

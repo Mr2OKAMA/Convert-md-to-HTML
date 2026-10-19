@@ -94,6 +94,9 @@ def build(folder, inline_css=False):
     environment = Environment(
         loader=FileSystemLoader(TEMPLATES),
         autoescape=select_autoescape(default=True),
+        trim_blocks=True,
+        lstrip_blocks=True,
+        keep_trailing_newline=True,
     )
     output = environment.get_template("procedure.html.j2").render(
         properties=properties,

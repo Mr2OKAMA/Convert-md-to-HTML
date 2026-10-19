@@ -49,11 +49,15 @@ class MermaidPostprocessor(Postprocessor):
 class ProcedurePhotoTreeprocessor(Treeprocessor):
     def run(self, root):
         in_procedure = False
+        procedure_heading = None
         for element in root:
-            if element.tag == "h2":
+            if element.tag in {f"h{level}" for level in range(1, 7)}:
                 if in_procedure:
-                    break
-                in_procedure = "".join(element.itertext()).strip() == "手順"
+                    if element.tag == procedure_heading:
+                        break
+                elif "".join(element.itertext()).strip() == "手順":
+                    in_procedure = True
+                    procedure_heading = element.tag
                 continue
             if not in_procedure or element.tag != "ol":
                 continue

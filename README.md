@@ -20,3 +20,7 @@ python app.py        # http://localhost:8000 （環境変数 HOST / PORT で変�
 
 ブラウザでMarkdownファイルをアップロードすると、タブ付きHTMLが表示（またはダウンロード）されます。
 本番運用では `gunicorn app:app` などのWSGIサーバーを使ってください。
+
+## 公開サイト（GitHub Pages）
+
+`index.html` がトップページです。ブラウザ上でMarkdownをアップロードしてHTMLに変換できます（`template.html` は変換時に読み込まれる部品で、トップには表示されません）。

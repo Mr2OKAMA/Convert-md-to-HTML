@@ -13,6 +13,7 @@ from markdown.extensions import Extension
 from markdown.extensions.toc import slugify_unicode
 from markdown.inlinepatterns import InlineProcessor
 from markdown.postprocessors import Postprocessor
+from markdown.treeprocessors import Treeprocessor
 from markdown.util import AtomicString
 
 from convert import markdown_converter
@@ -45,8 +46,46 @@ class MermaidPostprocessor(Postprocessor):
         )
 
 
+class ProcedurePhotoTreeprocessor(Treeprocessor):
+    def run(self, root):
+        in_procedure = False
+        for element in root:
+            if element.tag == "h2":
+                if in_procedure:
+                    break
+                in_procedure = "".join(element.itertext()).strip() == "手順"
+                continue
+            if not in_procedure or element.tag != "ol":
+                continue
+            element.set("class", "procedure-steps")
+            for item in element.findall("li"):
+                image = next(item.iter("img"), None)
+                caption = "写真を追加"
+                if image is not None:
+                    caption = image.get("alt", "").strip() or "手順の写真"
+                    image.set("alt", caption)
+                    image.set("loading", "lazy")
+                    parent = next(
+                        (node for node in item.iter() if image in list(node)),
+                        None,
+                    )
+                    if parent is not None:
+                        parent.remove(image)
+                        if parent.tag == "p" and not len(parent) and not (parent.text or "").strip():
+                            item.remove(parent)
+                figure_class = "step-photo" if image is not None else "step-photo step-photo-placeholder"
+                figure = ElementTree.SubElement(item, "figure", {"class": figure_class})
+                if image is not None:
+                    figure.append(image)
+                ElementTree.SubElement(figure, "figcaption").text = caption
+        return root
+
+
 class ProcedureExtension(Extension):
     def extendMarkdown(self, md):
+        md.treeprocessors.register(
+            ProcedurePhotoTreeprocessor(md), "procedure_photos", 5
+        )
         md.inlinePatterns.register(
             ConfirmInlineProcessor(r"【要確認】", md), "confirm", 65
         )

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdown → タブ付きHTML 変換</title>
+<style>
+body { margin:0; font-family:-apple-system,"Segoe UI","Hiragino Sans","Meiryo",sans-serif; background:#f6f8fa; color:#1f2328; line-height:1.7; }
+main { max-width:720px; margin:40px auto; padding:0 16px; }
+.card { background:#fff; border:1px solid #d0d7de; border-radius:8px; padding:24px 32px; }
+h1 { color:#2563eb; font-size:1.5rem; margin-top:0; }
+label { display:block; margin:16px 0 4px; font-weight:600; }
+input[type=text] { width:100%; padding:8px; border:1px solid #d0d7de; border-radius:6px; box-sizing:border-box; }
+button { margin:16px 8px 0 0; padding:8px 20px; border:none; border-radius:6px; background:#2563eb; color:#fff; font-size:1rem; cursor:pointer; }
+button:disabled { background:#9ca3af; cursor:not-allowed; }
+#msg { color:#b91c1c; margin-top:12px; }
+</style>
+</head>
+<body>
+<main>
+<div class="card">
+<h1>Markdown → タブ付きHTML 変換</h1>
+<p>複数のMarkdownファイルを、タブで切り替えて閲覧できる1つのHTMLにまとめます。変換はブラウザ内で行われ、ファイルは外部に送信されません。</p>
+<label for="files">Markdownファイル（複数選択可）</label>
+<input id="files" type="file" accept=".md,.markdown,.txt,text/markdown" multiple>
+<label for="title">タイトル</label>
+<input id="title" type="text" value="説明書">
+<button id="preview" disabled>プレビュー</button>
+<button id="download" disabled>HTMLをダウンロード</button>
+<div id="msg" role="alert"></div>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+$('files').addEventListener('change', () => {
+  const ok = $('files').files.length > 0;
+  $('preview').disabled = $('download').disabled = !ok;
+});
+async function build() {
+  $('msg').textContent = '';
+  try {
+    const tpl = await (await fetch('template.html')).text();
+    const files = [...$('files').files];
+    const tabs = [], panels = [];
+    for (const [i, f] of files.entries()) {
+      const body = DOMPurify.sanitize(marked.parse(await f.text()));
+      const name = f.name.replace(/\.[^.]+$/, '');
+      tabs.push(`<button class="tab" role="tab" data-target="tab${i}">${esc(name)}</button>`);
+      panels.push(`<section class="panel" id="tab${i}" role="tabpanel">${body}</section>`);
+    }
+    const v = { TITLE: esc($('title').value || '説明書'), TABS: tabs.join('\n'), PANELS: panels.join('\n') };
+    return tpl.replace(/\{\{(TITLE|TABS|PANELS)\}\}/g, (_, k) => v[k]);
+  } catch (e) {
+    $('msg').textContent = '変換に失敗しました: ' + e.message;
+    return null;
+  }
+}
+$('preview').addEventListener('click', async () => {
+  const html = await build();
+  if (html) window.open(URL.createObjectURL(new Blob([html], {type:'text/html'})), '_blank');
+});
+$('download').addEventListener('click', async () => {
+  const html = await build();
+  if (!html) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([html], {type:'text/html'}));
+  a.download = 'output.html';
+  a.click();
+});
+</script>
+</body>
+</html>

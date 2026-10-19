@@ -57,9 +57,46 @@
     </section>
     {% endfor %}
   </main>
+  <dialog id="photo-dialog" aria-label="写真の拡大表示">
+    <form method="dialog"><button class="dialog-close">閉じる</button></form>
+    <img alt="">
+  </dialog>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.esm.min.mjs";
     mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });
+  </script>
+  <script>
+    const contentsLinks = [...document.querySelectorAll('nav a[href^="#"]')];
+    const headings = [...document.querySelectorAll('main h2[id], main h3[id]')];
+    const updateContents = () => {
+      let current = headings[0];
+      for (const heading of headings) {
+        if (heading.getBoundingClientRect().top > 140) break;
+        current = heading;
+      }
+      contentsLinks.forEach((link) => {
+        const active = current && link.hash === `#${current.id}`;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+    document.addEventListener("scroll", updateContents, { passive: true });
+    window.addEventListener("resize", updateContents);
+    updateContents();
+
+    const photoDialog = document.querySelector("#photo-dialog");
+    const enlargedPhoto = photoDialog.querySelector("img");
+    document.querySelectorAll(".step-photo img").forEach((photo) => {
+      photo.addEventListener("click", () => {
+        enlargedPhoto.src = photo.src;
+        enlargedPhoto.alt = photo.alt;
+        photoDialog.showModal();
+      });
+    });
+    photoDialog.addEventListener("click", (event) => {
+      if (event.target === photoDialog) photoDialog.close();
+    });
   </script>
 </body>
 </html>

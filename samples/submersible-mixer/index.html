@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>反応槽 水中撹拌機 点検 手順書</title>
+  <link rel="stylesheet" href="../../templates/style.css">
+</head>
+<body>
+  <header id="cover">
+    <p class="document-type">作業手順書</p>
+    <h1>反応槽 水中撹拌機 点検</h1>
+    <table class="properties">
+      <caption>プロパティ</caption>
+      <tbody>
+        <tr><th scope="row">作業名</th><td>反応槽 水中撹拌機 点検</td></tr>
+        <tr><th scope="row">管理ID</th><td>SOP-MIX-001</td></tr>
+        <tr><th scope="row">版数</th><td>1.0</td></tr>
+        <tr><th scope="row">作成者</th><td></td></tr>
+        <tr><th scope="row">作成日</th><td>2026-10-19</td></tr>
+        <tr><th scope="row">承認者</th><td></td></tr>
+      </tbody>
+    </table>
+    <section aria-labelledby="history">
+      <h2 id="history">改訂履歴</h2>
+      <table>
+        <thead><tr><th scope="col">版数</th><th scope="col">日付</th><th scope="col">改訂者</th><th scope="col">内容</th></tr></thead>
+        <tbody>
+          <tr><td>1.0</td><td>2026-10-19</td><td></td><td>初版作成</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </header>
+  <nav aria-labelledby="contents">
+    <h2 id="contents">目次</h2>
+    <ul>
+      <li><a href="#cover">プロパティ</a></li>
+      <li><a href="#history">改訂履歴</a></li>
+      <li>
+        <a href="#mindset">マインドセット</a>
+        <div class="toc">
+<ul>
+<li><a href="#mindset-姿勢考え方">姿勢・考え方</a></li>
+<li><a href="#mindset-本質">本質</a></li>
+<li><a href="#mindset-目的">目的</a></li>
+<li><a href="#mindset-ゴールイメージ">ゴールイメージ</a></li>
+<li><a href="#mindset-目安">目安</a></li>
+</ul>
+</div>
+
+      </li>
+      <li>
+        <a href="#workflow">ワークフロー</a>
+        <div class="toc">
+<ul>
+<li><a href="#workflow-スタンダードな流れ">スタンダードな流れ</a></li>
+<li><a href="#workflow-関係者">関係者</a></li>
+</ul>
+</div>
+
+      </li>
+      <li>
+        <a href="#operations">オペレーション</a>
+        <div class="toc">
+<ul>
+<li><a href="#operations-ルール">ルール</a></li>
+<li><a href="#operations-手順">手順</a><ul>
+<li><a href="#operations-①-作業前準備510分">① 作業前準備(5〜10分)</a></li>
+<li><a href="#operations-②-運転前点検1015分">② 運転前点検(10〜15分)</a></li>
+<li><a href="#operations-③-運転中の確認1015分">③ 運転中の確認(10〜15分)</a></li>
+<li><a href="#operations-④-定期点検3060分要確認">④ 定期点検(30〜60分【要確認】)</a></li>
+<li><a href="#operations-⑤-異常時の停止復旧">⑤ 異常時の停止・復旧</a></li>
+<li><a href="#operations-⑥-記録引き継ぎ510分">⑥ 記録・引き継ぎ(5〜10分)</a></li>
+</ul>
+</li>
+<li><a href="#operations-方法">方法</a></li>
+<li><a href="#operations-例">例</a></li>
+<li><a href="#operations-用語集参照資料">用語集・参照資料</a><ul>
+<li><a href="#operations-用語集">用語集</a></li>
+<li><a href="#operations-参照資料">参照資料</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+      </li>
+    </ul>
+  </nav>
+  <main>
+    <section aria-labelledby="mindset">
+      <h2 id="mindset">マインドセット</h2>
+      <h3 id="mindset-姿勢考え方">姿勢・考え方</h3>
+<p><strong>「動いている=正常」ではありません。</strong> 回っていても、羽根の摩耗・異音・振動・電流値の変化など、故障の前ぶれが出ていることがあります。</p>
+<p><strong>安全は作業品質の一部です。</strong> 反応槽は水没・転落・酸欠・感電のリスクがある場所です。必ず<strong>2人以上</strong>で作業し、電源を切ってから作業します。</p>
+<p><strong>迷ったら止めて相談します。</strong> 判断がつかない異常は、自分で復旧しようとせず、運転を止めて責任者に連絡します。</p>
+<h3 id="mindset-本質">本質</h3>
+<p>水中撹拌機は、反応槽の中の汚泥と水を混ぜ続ける設備です。点検の本質は、故障してから直すのではなく、<strong>変化に早く気づいて止まる前に手を打つ</strong>ことです。</p>
+<h3 id="mindset-目的">目的</h3>
+<p>反応槽内の汚泥を沈ませず、水と均一に混ぜることで、生物処理(微生物の働き)を安定させます。撹拌機が止まると、次のことが起こります。</p>
+<ul>
+<li>汚泥が沈殿・堆積し、処理水質が悪化する</li>
+<li>槽内が偏った状態になり、悪臭や処理能力の低下につながる</li>
+<li>復旧に時間とコストがかかる</li>
+</ul>
+<h3 id="mindset-ゴールイメージ">ゴールイメージ</h3>
+<ul>
+<li>槽内の汚泥が沈まず、全体が均一に混ざっている状態</li>
+<li>異音・異常振動・異臭がない状態</li>
+<li>電流値が普段の範囲内で安定している状態</li>
+<li>点検結果が記録され、誰が見ても同じ判断ができる状態</li>
+</ul>
+<h3 id="mindset-目安">目安</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>日常点検の所要時間</td>
+<td>約30〜45分<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>定期点検(月次)を行う日の追加</td>
+<td>+30〜60分<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>作業人数</td>
+<td>2人以上</td>
+</tr>
+</tbody>
+</table>
+    </section>
+    <section aria-labelledby="workflow">
+      <h2 id="workflow">ワークフロー</h2>
+      <h3 id="workflow-スタンダードな流れ">スタンダードな流れ</h3>
+<pre class="mermaid">flowchart LR
+    A[①作業前準備] --&gt; B[②運転前点検]
+    B --&gt; C{異音・異常振動・警報はないか}
+    C --&gt;|はい| D[③運転中の確認]
+    C --&gt;|いいえ| F[⑤異常時の停止・復旧]
+    D --&gt; E[④定期点検]
+    E --&gt; G[⑥記録・引き継ぎ]
+    F --&gt; G
+</pre>
+<table>
+<thead>
+<tr>
+<th>ステップ</th>
+<th>内容</th>
+<th>所要時間の目安</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① 作業前準備</td>
+<td>保護具・工具・点検表の準備、作業者と連絡先の確認</td>
+<td>5〜10分</td>
+</tr>
+<tr>
+<td>② 運転前点検</td>
+<td>外観、吊り上げチェーン・ガイドレール、ケーブル、制御盤の確認</td>
+<td>10〜15分</td>
+</tr>
+<tr>
+<td>③ 運転中の確認</td>
+<td>異音・振動・電流値・撹拌状況の確認</td>
+<td>10〜15分</td>
+</tr>
+<tr>
+<td>④ 定期点検</td>
+<td>絶縁抵抗測定、羽根の摩耗確認、シール・オイルの確認</td>
+<td>30〜60分<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>⑤ 異常時の停止・復旧</td>
+<td>安全に停止し、記録・連絡・原因確認・試運転で復旧を確認</td>
+<td>状況による</td>
+</tr>
+<tr>
+<td>⑥ 記録・引き継ぎ</td>
+<td>日報記入、次の担当者への申し送り</td>
+<td>5〜10分</td>
+</tr>
+</tbody>
+</table>
+<p><strong>全体の所要時間の目安:通常日 約30〜45分/定期点検の日は +30〜60分<mark class="confirm">【要確認】</mark></strong></p>
+<h3 id="workflow-関係者">関係者</h3>
+<table>
+<thead>
+<tr>
+<th>関係者</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>点検担当者</td>
+<td>点検の実施と記録</td>
+</tr>
+<tr>
+<td>補助者</td>
+<td>安全監視、点検の補助(2人作業の相方)</td>
+</tr>
+<tr>
+<td>責任者</td>
+<td>異常時の判断、復旧の可否判断</td>
+</tr>
+<tr>
+<td>電気担当者</td>
+<td>制御盤・電源・絶縁測定などの電気作業<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>メーカー・保守業者</td>
+<td>分解整備や部品交換<mark class="confirm">【要確認】</mark></td>
+</tr>
+</tbody>
+</table>
+    </section>
+    <section aria-labelledby="operations">
+      <h2 id="operations">オペレーション</h2>
+      <h3 id="operations-ルール">ルール</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>作業人数</td>
+<td><strong>2人以上</strong>。単独で槽に近づかない</td>
+</tr>
+<tr>
+<td>保護具</td>
+<td>ヘルメット、安全帯(墜落制止用器具)、ゴム手袋、安全靴、必要に応じて保護メガネ</td>
+</tr>
+<tr>
+<td>電源</td>
+<td>引き上げ・分解・清掃の前は<strong>必ず電源を切り、施錠・表示</strong>する</td>
+</tr>
+<tr>
+<td>槽内への立ち入り</td>
+<td><strong>原則禁止</strong>。必要な場合は社内規程に従う<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>点検周期</td>
+<td>日常:毎日/定期:月1回<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>異常時</td>
+<td>判断に迷ったら止めて責任者へ連絡する</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operations-手順">手順</h3>
+<h4 id="operations-①-作業前準備510分">① 作業前準備(5〜10分)</h4>
+<p><strong>誰が:点検担当者・補助者</strong></p>
+<ol>
+<li>点検表と筆記具を用意する。</li>
+<li>保護具を着用する。</li>
+<li>補助者と作業内容・役割を確認する。</li>
+<li>責任者・電気担当者の連絡先を確認する。</li>
+<li>前回の日報を読み、申し送り事項を確認する。</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>重要ポイント:単独作業の禁止</strong>
+反応槽の周囲は転落・水没の危険があります。必ず2人以上で作業してください。</p>
+</blockquote>
+<h4 id="operations-②-運転前点検1015分">② 運転前点検(10〜15分)</h4>
+<p><strong>誰が:点検担当者</strong></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+<th>目安周期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>外観</td>
+<td>本体の傷・腐食・汚れの付着</td>
+<td>毎日</td>
+</tr>
+<tr>
+<td>吊り上げチェーン・ワイヤー</td>
+<td>腐食・変形・ほつれ</td>
+<td>毎日</td>
+</tr>
+<tr>
+<td>ガイドレール・支持金具</td>
+<td>ゆるみ・変形</td>
+<td>毎日</td>
+</tr>
+<tr>
+<td>水中ケーブル</td>
+<td>被覆の傷・水没部の損傷</td>
+<td>毎日</td>
+</tr>
+<tr>
+<td>制御盤</td>
+<td>表示灯・警報・ブレーカー状態</td>
+<td>毎日</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>槽の周囲に危険物や滑りやすい箇所がないか確認する。</li>
+<li>制御盤の警報表示がないか確認する。</li>
+<li>ブレーカーが入っていることを確認する。</li>
+<li>チェーン・ワイヤーの状態を目視で確認する。</li>
+<li>ガイドレールと支持金具のゆるみを確認する。</li>
+<li>ケーブルに傷や引っ張られている箇所がないか確認する。</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>ミスが起きやすいポイント</strong>
+- 制御盤の警報履歴を見ずに運転してしまう
+- <strong>ケーブルの傷を見落とし、漏電につながる</strong>
+- チェーンの腐食を「いつものこと」と見過ごす</p>
+</blockquote>
+<h4 id="operations-③-運転中の確認1015分">③ 運転中の確認(10〜15分)</h4>
+<p><strong>誰が:点検担当者・補助者</strong></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+<th>目安</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>異音</td>
+<td>うなり音、金属音、ガタつき音がないか</td>
+<td>普段と違えば要注意</td>
+</tr>
+<tr>
+<td>振動</td>
+<td>槽の手すりや配管に伝わる振動</td>
+<td>普段と違えば要注意</td>
+</tr>
+<tr>
+<td>電流値</td>
+<td>制御盤の電流計の値</td>
+<td>定格電流以下<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>撹拌状況</td>
+<td>水面の流れ、汚泥の沈みがないか</td>
+<td>全体が均一に流れている</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>運転ランプが点灯していることを確認する。</li>
+<li>電流値を読み取り、点検表に記入する。</li>
+<li>異音や振動がないか、耳と手で確認する。</li>
+<li>水面の流れを見て、撹拌が偏っていないか確認する。</li>
+<li>汚泥が沈んでいるように見える場合は、写真を撮る。</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>俗人化しやすいポイント:異音・振動の判断</strong>
+「いつもと違う」の感じ方は人によって違います。<strong>音は動画、水面の流れは写真で記録</strong>し、日報に残して基準をそろえてください。</p>
+</blockquote>
+<h4 id="operations-④-定期点検3060分要確認">④ 定期点検(30〜60分<mark class="confirm">【要確認】</mark>)</h4>
+<p><strong>誰が:点検担当者・電気担当者</strong></p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>内容</th>
+<th>目安周期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>絶縁抵抗測定</td>
+<td>モーターの絶縁状態</td>
+<td>月1回<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>羽根の摩耗・絡まり</td>
+<td>羽根の変形・摩耗・異物の絡まり</td>
+<td>月1回<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>メカニカルシール</td>
+<td>漏れ・オイル劣化</td>
+<td>年1回<mark class="confirm">【要確認】</mark></td>
+</tr>
+<tr>
+<td>取付ボルト</td>
+<td>ゆるみ・腐食</td>
+<td>月1回<mark class="confirm">【要確認】</mark></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>電源を切り、施錠して「点検中」の表示を付ける。</li>
+<li>撹拌機を規程の手順で引き上げる<mark class="confirm">【要確認】</mark>。</li>
+<li>羽根に異物が絡まっていないか確認し、あれば取り除く。</li>
+<li>羽根の摩耗・欠けを確認する。</li>
+<li>絶縁抵抗を測定し、値を記録する(基準値は<mark class="confirm">【要確認】</mark>)。</li>
+<li>ボルトのゆるみを確認する。</li>
+<li>元の位置に戻して固定する。</li>
+<li>施錠を解除し、試運転する。</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>重要ポイント:電源遮断の確認</strong>
+引き上げ・清掃の前に、電源が切れていることを必ず2人で確認してください。<strong>電源が入ったままの作業は感電・巻き込まれの危険があります。</strong></p>
+</blockquote>
+<h4 id="operations-⑤-異常時の停止復旧">⑤ 異常時の停止・復旧</h4>
+<p><strong>通常停止</strong></p>
+<ol>
+<li>制御盤で停止操作をする。</li>
+<li>停止したことを音と表示灯で確認する。</li>
+<li>日報に停止理由を記録する。</li>
+</ol>
+<p><strong>異常発生時</strong></p>
+<ol>
+<li><strong>安全に停止する</strong>:制御盤で停止し、必要なら電源を切る。</li>
+<li><strong>状況を記録する</strong>:異音・警報・電流値・時刻を写真やメモで残す。</li>
+<li><strong>連絡する</strong>:責任者に連絡する。電気的な異常は電気担当者にも連絡する。</li>
+<li><strong>原因を確認する</strong>:異物の絡まり、ケーブル損傷、ブレーカー作動などを確認する。</li>
+<li><strong>試運転で復旧を確認する</strong>:運転して異音・振動・電流値が正常か確認する。</li>
+</ol>
+<p>異常時の判断の目安は次のとおりです。</p>
+<ul>
+<li>異常電流・焦げ臭い場合は、すぐ停止して責任者へ連絡する。</li>
+<li>ブレーカーが作動した場合は、<strong>原因を確認せずに再投入しない</strong>。</li>
+<li>異物の絡まりが原因で、自分で取り除けない場合は、メーカー・保守業者へ依頼する。</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>重要ポイント:再投入の禁止</strong>
+ブレーカーが落ちた原因が分からないまま再投入すると、故障の拡大や感電につながります。</p>
+</blockquote>
+<h4 id="operations-⑥-記録引き継ぎ510分">⑥ 記録・引き継ぎ(5〜10分)</h4>
+<p><strong>誰が:点検担当者</strong></p>
+<p>日報に次の項目を書きます。</p>
+<ul>
+<li>点検日時・担当者・補助者</li>
+<li>電流値</li>
+<li>異音・振動・撹拌状況の有無</li>
+<li>異常があった場合の内容と対応</li>
+<li>写真・動画の保存場所</li>
+<li>次の担当者への申し送り事項</li>
+</ul>
+<h3 id="operations-方法">方法</h3>
+<ul>
+<li>異音は、機側で耳を近づけるのではなく、<strong>手すり越しに聞く</strong>。</li>
+<li>振動は、手すりや配管に手を当てて確認する(回転部には触れない)。</li>
+<li>電流値は、毎回同じ時間帯・同じ運転状態で読み取る。</li>
+<li>写真・動画は、同じ角度・同じ位置から撮る。</li>
+</ul>
+<h3 id="operations-例">例</h3>
+<p><strong>例1:電流値がいつもより高い場合</strong></p>
+<ol>
+<li>撹拌状況と異音を確認する。</li>
+<li>羽根に異物が絡まっていないか疑う。</li>
+<li>電流値が定格を超える場合は、停止して責任者へ連絡する。</li>
+</ol>
+<p><strong>例2:水面の流れが偏っている場合</strong></p>
+<ol>
+<li>他の撹拌機の運転状況を確認する。</li>
+<li>羽根の摩耗や向きのずれを疑う。</li>
+<li>写真を撮り、次回の定期点検で確認する。</li>
+</ol>
+<h3 id="operations-用語集参照資料">用語集・参照資料</h3>
+<h4 id="operations-用語集">用語集</h4>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>水中撹拌機</td>
+<td>水中に設置して槽内の水と汚泥を混ぜる機械</td>
+</tr>
+<tr>
+<td>反応槽</td>
+<td>微生物の働きで汚れを分解する槽</td>
+</tr>
+<tr>
+<td>絶縁抵抗</td>
+<td>モーターの電気的な絶縁状態を示す値</td>
+</tr>
+<tr>
+<td>メカニカルシール</td>
+<td>水がモーター内に入るのを防ぐ部品</td>
+</tr>
+<tr>
+<td>定格電流</td>
+<td>機器に表示された、通常運転で想定される電流値</td>
+</tr>
+</tbody>
+</table>
+<h4 id="operations-参照資料">参照資料</h4>
+<ul>
+<li>メーカー取扱説明書<mark class="confirm">【要確認】</mark></li>
+<li>社内の安全作業規程・槽内立入規程<mark class="confirm">【要確認】</mark></li>
+<li>過去の点検記録・日報</li>
+<li>緊急連絡網<mark class="confirm">【要確認】</mark></li>
+</ul>
+    </section>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict" });
+  </script>
+</body>
+</html>

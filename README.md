@@ -19,7 +19,10 @@
 | `app.py` | Flask製Webサービス（アップロードして変換） |
 | `index.html` | 静的な変換ページ（ブラウザ内で変換、`template.html` を読み込む） |
 | `template.html` | デザインテンプレート |
-| `requirements.txt` | 依存ライブラリ（markdown, flask） |
+| `build.py` | プロパティ＋3つのMarkdown → 目次付きの1ページHTML |
+| `templates/procedure.html.j2` | 手順書のHTML構造（Jinja2） |
+| `templates/style.css` | 手順書のデザイン・印刷用スタイル |
+| `requirements.txt` | 依存ライブラリ（markdown, flask, PyYAML, Jinja2） |
 
 ## 使い方
 
@@ -45,8 +48,50 @@ python app.py        # http://localhost:8000 （環境変数 HOST / PORT で変�
 
 ## テンプレートの編集
 
-デザインは `template.html` で編集できます。次のプレースホルダーが置換されます。
+既存のタブ表示のデザインは `template.html` で編集できます。次のプレースホルダーが置換されます。
 
 - `{{TITLE}}` : タイトル
 - `{{TABS}}` : タブ部分
 - `{{PANELS}}` : 各Markdownの本文
+
+## 4要素から手順書を作る
+
+プロパティ・マインドセット・ワークフロー・オペレーションを別ファイルで管理し、`build.py` で1ページにまとめます。
+
+```text
+samples/submersible-mixer/
+├── 0_property.yaml
+├── 1_マインドセット.md
+├── 2_ワークフロー.md
+├── 3_オペレーション.md
+└── index.html              # 生成物（確認用サンプルを同梱）
+templates/
+├── procedure.html.j2       # HTMLの骨組み
+└── style.css               # デザインはここだけで管理
+```
+
+`0_property.yaml` には作業名・管理ID・版数・作成者・作成日・承認者と、改訂履歴（版数・日付・改訂者・内容のリスト）を記入します。版数は `"1.0"` のように引用符で囲み、未定の担当者などは空欄にできます。YAMLのコメントはHTMLには出力されません。
+
+リポジトリ直下で実行します。
+
+```sh
+pip install -r requirements.txt
+python build.py samples/submersible-mixer
+python build.py --all
+# シェルでフォルダを展開して一括指定する方法
+python build.py samples/*
+# CSSを埋め込んだ単体HTML（同じindex.htmlを上書き）
+python build.py samples/submersible-mixer --inline-css
+```
+
+出力先は各フォルダの `index.html` です。フォルダは複数指定でき、一括変換では `0_property.yaml` のないフォルダ（既存の `sludge-collector` など）をメッセージ付きでスキップします。単独指定時のプロパティ不足や、Markdownの不足はエラーになります。
+
+プロパティと改訂履歴、目次、3セクションを表示します。各Markdownの先頭H1はビルド時だけ除去し、タイトルをプロパティから、セクション見出しをテンプレートから付与するため、元のMarkdownは変更しません。表・引用ブロック・`【要確認】` のハイライトに対応し、コード内の `【要確認】` はそのまま表示します。
+
+通常は `templates/style.css` を相対パスで参照するため、**デザイン改定はこのCSSだけを変更**すれば反映されます。配布時はフォルダの相対位置を保ってCSSも渡してください。`--inline-css` の場合はCSS変更後に再ビルドし、生成されたHTMLだけを配布できます（Markdownから参照する画像等は別途必要です）。印刷・PDF保存にも対応しています。
+
+Mermaidコードブロックは図として描画します。Mermaid.jsはバージョンを固定したCDNから取得するため、`--inline-css` 使用時も図の表示にはインターネット接続が必要です。印刷は図が表示されてから行ってください。
+
+既存の `convert.py`・`app.py` は、任意のMarkdownをタブ表示にする従来の用途として引き続き利用できます。`build.py` は `convert.py` のMarkdown変換設定を共用し、手順書専用の組み立て・装飾を追加しています。ルートの `index.html`（静的変換ページ）も変更しません。
+
+入力は管理者が確認した信頼できるローカルファイルを使用してください。Markdown内のHTMLはそのまま出力されるため、未確認の第三者ファイルを公開用HTMLに変換する用途には使用しないでください。

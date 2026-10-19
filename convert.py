@@ -13,6 +13,14 @@ import markdown
 TEMPLATE = Path(__file__).with_name("template.html")
 
 
+def markdown_converter(extra_extensions=(), **kwargs):
+    """CLIと手順書ビルダーで共通のMarkdown拡張を使用する。"""
+    return markdown.Markdown(
+        extensions=["fenced_code", "tables", "toc", "sane_lists", *extra_extensions],
+        **kwargs,
+    )
+
+
 def title_of(path: Path, text: str) -> str:
     m = re.search(r"^#\s+(.+)$", text, re.M)
     return m.group(1).strip() if m else path.stem
@@ -28,9 +36,7 @@ def build_from_texts(items, title):
     """items: (名前, Markdown本文) のリストからHTML文字列を生成する。"""
     tabs, panels = [], []
     for i, (name, text) in enumerate(items):
-        body = markdown.markdown(
-            text, extensions=["fenced_code", "tables", "toc", "sane_lists"]
-        )
+        body = markdown_converter().convert(text)
         pid = f"tab{i}"
         tabs.append(
             f'<button class="tab" role="tab" data-target="{pid}">'

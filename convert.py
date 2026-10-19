@@ -19,16 +19,22 @@ def title_of(path: Path, text: str) -> str:
 
 
 def build(files, title):
+    return build_from_texts(
+        [(f.stem, f.read_text(encoding="utf-8")) for f in files], title
+    )
+
+
+def build_from_texts(items, title):
+    """items: (名前, Markdown本文) のリストからHTML文字列を生成する。"""
     tabs, panels = [], []
-    for i, f in enumerate(files):
-        text = f.read_text(encoding="utf-8")
+    for i, (name, text) in enumerate(items):
         body = markdown.markdown(
             text, extensions=["fenced_code", "tables", "toc", "sane_lists"]
         )
         pid = f"tab{i}"
         tabs.append(
             f'<button class="tab" role="tab" data-target="{pid}">'
-            f"{html.escape(f.stem)}</button>"
+            f"{html.escape(name)}</button>"
         )
         panels.append(f'<section class="panel" id="{pid}" role="tabpanel">{body}</section>')
     out = TEMPLATE.read_text(encoding="utf-8")

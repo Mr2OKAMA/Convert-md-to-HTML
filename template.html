@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>
+:root { --accent:#2563eb; --bg:#f6f8fa; --border:#d0d7de; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:-apple-system,"Segoe UI","Hiragino Sans","Meiryo",sans-serif; background:var(--bg); color:#1f2328; line-height:1.7; }
+header { background:#fff; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
+header h1 { margin:0; padding:12px 24px 0; font-size:1.1rem; }
+.tabs { display:flex; gap:4px; padding:8px 24px 0; overflow-x:auto; }
+.tab { border:1px solid transparent; border-bottom:none; background:none; padding:8px 18px; cursor:pointer; font-size:.95rem; border-radius:6px 6px 0 0; color:#57606a; white-space:nowrap; }
+.tab:hover { background:var(--bg); }
+.tab[aria-selected="true"] { background:var(--bg); border-color:var(--border); color:var(--accent); font-weight:600; margin-bottom:-1px; }
+main { max-width:900px; margin:24px auto; padding:0 16px; }
+.panel { display:none; background:#fff; border:1px solid var(--border); border-radius:8px; padding:24px 36px; }
+.panel.active { display:block; }
+.panel h1,.panel h2 { border-bottom:1px solid var(--border); padding-bottom:.3em; }
+.panel h1 { color:var(--accent); }
+.panel pre { background:#f0f3f6; padding:14px; border-radius:6px; overflow-x:auto; }
+.panel code { background:#eff1f3; padding:.15em .35em; border-radius:4px; font-family:ui-monospace,Consolas,monospace; font-size:.9em; }
+.panel pre code { background:none; padding:0; }
+.panel table { border-collapse:collapse; width:100%; margin:1em 0; }
+.panel th,.panel td { border:1px solid var(--border); padding:6px 12px; }
+.panel th { background:var(--bg); }
+.panel blockquote { margin:1em 0; padding:0 1em; color:#57606a; border-left:4px solid var(--border); }
+.panel img { max-width:100%; }
+.panel a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+<h1>{{TITLE}}</h1>
+<div class="tabs" role="tablist">
+{{TABS}}
+</div>
+</header>
+<main>
+{{PANELS}}
+</main>
+<script>
+const tabs=[...document.querySelectorAll('.tab')];
+function activate(id){
+  tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.target===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));
+  history.replaceState(null,'','#'+id);
+}
+tabs.forEach(t=>t.addEventListener('click',()=>activate(t.dataset.target)));
+const initial=location.hash.slice(1);
+activate(tabs.some(t=>t.dataset.target===initial)?initial:tabs[0].dataset.target);
+</script>
+</body>
+</html>

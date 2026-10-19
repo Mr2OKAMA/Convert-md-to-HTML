@@ -28,6 +28,25 @@ main { max-width:900px; margin:24px auto; padding:0 16px; }
 .panel blockquote { margin:1em 0; padding:0 1em; color:#57606a; border-left:4px solid var(--border); }
 .panel img { max-width:100%; }
 .panel a { color:var(--accent); }
+
+/* ===== 手順ごとの画像 ===== */
+.panel ol > li { margin-bottom:1.2em; }
+.photo-tools { margin:6px 0; padding:8px 12px; border:2px dashed var(--border); border-radius:6px; background:var(--bg); font-size:.85rem; color:#57606a; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.photo-tools.dragover { border-color:var(--accent); background:#eff6ff; }
+.photo-tools button, #save-btn { border:1px solid var(--border); background:#fff; border-radius:6px; padding:4px 12px; cursor:pointer; font-size:.85rem; }
+.photo-tools button:hover, #save-btn:hover { border-color:var(--accent); color:var(--accent); }
+figure.step-photo { margin:10px 0; position:relative; display:inline-block; max-width:100%; }
+figure.step-photo img { display:block; max-width:100%; border:1px solid var(--border); border-radius:6px; }
+figure.step-photo figcaption { font-size:.85rem; color:#57606a; min-height:1.4em; outline:none; }
+figure.step-photo figcaption:empty::before { content:"キャプションを入力…"; color:#adb5bd; }
+figure.step-photo .del { position:absolute; top:6px; right:6px; border:none; background:rgba(0,0,0,.6); color:#fff; border-radius:50%; width:24px; height:24px; cursor:pointer; line-height:24px; padding:0; }
+#save-btn { margin:0 24px 8px; }
+@media print {
+  header, .photo-tools, figure.step-photo .del { display:none !important; }
+  body { background:#fff; }
+  .panel { display:block !important; border:none; padding:0; page-break-after:always; }
+  figure.step-photo { break-inside:avoid; }
+}
 </style>
 </head>
 <body>
@@ -36,6 +55,7 @@ main { max-width:900px; margin:24px auto; padding:0 16px; }
 <div class="tabs" role="tablist">
 {{TABS}}
 </div>
+<button id="save-btn" type="button" title="画像を埋め込んだ状態でHTMLを保存します">💾 画像込みで保存</button>
 </header>
 <main>
 {{PANELS}}
@@ -50,6 +70,86 @@ function activate(id){
 tabs.forEach(t=>t.addEventListener('click',()=>activate(t.dataset.target)));
 const initial=location.hash.slice(1);
 activate(tabs.some(t=>t.dataset.target===initial)?initial:tabs[0].dataset.target);
+
+/* ===== 手順(番号付きリストの各項目)に画像を差し込む =====
+   - 「画像を追加」ボタン / ドラッグ&ドロップ / クリップボード貼り付け(Ctrl+V) に対応
+   - 画像は縮小してdata URLとして埋め込むので、保存したHTML単体で表示できる
+   - 手順が番号付きリストでない場合は、見出し(h2/h3)にも差し込める */
+const MAX_W=1280;
+function readAsImage(file){
+  return new Promise(res=>{
+    const r=new FileReader();
+    r.onload=()=>{
+      const img=new Image();
+      img.onload=()=>{
+        const s=Math.min(1,MAX_W/img.width);
+        const c=document.createElement('canvas');
+        c.width=Math.round(img.width*s); c.height=Math.round(img.height*s);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        res(c.toDataURL(file.type==='image/png'?'image/png':'image/jpeg',0.85));
+      };
+      img.src=r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+function addPhoto(host,tools,src){
+  const fig=document.createElement('figure');
+  fig.className='step-photo';
+  const img=document.createElement('img'); img.src=src; img.alt='手順の画像';
+  const cap=document.createElement('figcaption'); cap.contentEditable='true';
+  const del=document.createElement('button'); del.className='del'; del.type='button'; del.textContent='×'; del.title='削除';
+  del.onclick=()=>fig.remove();
+  fig.append(img,cap,del);
+  tools.before(fig);
+}
+async function handleFiles(files,host,tools){
+  for(const f of files){
+    if(!f.type.startsWith('image/')) continue;
+    addPhoto(host,tools,await readAsImage(f));
+  }
+}
+function setupHost(host){
+  if(host.querySelector(':scope > .photo-tools')) return;
+  const tools=document.createElement('div');
+  tools.className='photo-tools';
+  tools.innerHTML='<span>📷 画像をドロップ / 貼り付け(Ctrl+V)</span>';
+  const btn=document.createElement('button'); btn.type='button'; btn.textContent='画像を追加';
+  const input=document.createElement('input'); input.type='file'; input.accept='image/*'; input.multiple=true; input.hidden=true;
+  btn.onclick=()=>input.click();
+  input.onchange=()=>{handleFiles(input.files,host,tools);input.value='';};
+  tools.append(btn,input);
+  tools.addEventListener('dragover',e=>{e.preventDefault();tools.classList.add('dragover');});
+  tools.addEventListener('dragleave',()=>tools.classList.remove('dragover'));
+  tools.addEventListener('drop',e=>{e.preventDefault();tools.classList.remove('dragover');handleFiles(e.dataTransfer.files,host,tools);});
+  tools.tabIndex=0;
+  tools.addEventListener('paste',e=>{
+    const files=[...e.clipboardData.items].filter(i=>i.type.startsWith('image/')).map(i=>i.getAsFile());
+    if(files.length){e.preventDefault();handleFiles(files,host,tools);}
+  });
+  host.append(tools);
+}
+document.querySelectorAll('.panel ol > li').forEach(setupHost);
+// 番号付きリストが無いパネルでは見出しの後ろに差し込み枠を用意
+document.querySelectorAll('.panel').forEach(p=>{
+  if(p.querySelector('ol > li')) return;
+  p.querySelectorAll('h2,h3').forEach(h=>{
+    const wrap=document.createElement('div'); wrap.className='step-host';
+    h.after(wrap); setupHost(wrap);
+  });
+});
+
+/* 画像込みでHTMLを保存(編集用の枠は取り除く) */
+document.getElementById('save-btn').onclick=()=>{
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('.photo-tools,#save-btn,.step-photo .del').forEach(e=>e.remove());
+  clone.querySelectorAll('figcaption').forEach(e=>e.removeAttribute('contenteditable'));
+  const html='<!DOCTYPE html>\n'+clone.outerHTML;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download=(document.title||'manual')+'.html';
+  a.click(); URL.revokeObjectURL(a.href);
+};
 </script>
 </body>
 </html>

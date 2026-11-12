@@ -2,6 +2,8 @@
 
 複数のMarkdown説明書を、タブ切り替え付きの1つの見やすいHTMLに変換するツールです。
 
+Markdownの書き方・注意事項は [docs/markdown-guide.md](docs/markdown-guide.md) を参照してください。
+
 ## 画面・ファイルの確認
 
 | ファイル | 説明 | リンク |
